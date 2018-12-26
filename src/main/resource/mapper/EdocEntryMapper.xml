@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.dao.EdocEntryMapper">
+  <resultMap id="BaseResultMap" type="com.bdqn.bean.EdocEntry">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="categoryId" jdbcType="INTEGER" property="categoryid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="uploaduser" jdbcType="VARCHAR" property="uploaduser" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from edoc_entry
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bdqn.bean.EdocEntry">
+    insert into edoc_entry (id, categoryId, title, 
+      summary, uploaduser, createdate
+      )
+    values (#{id,jdbcType=INTEGER}, #{categoryid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{summary,jdbcType=VARCHAR}, #{uploaduser,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bdqn.bean.EdocEntry">
+    update edoc_entry
+    set categoryId = #{categoryid,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      uploaduser = #{uploaduser,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, categoryId, title, summary, uploaduser, createdate
+    from edoc_entry
+    <if test="EdocCategoryId!=null">
+      where categoryId = (select id from edoc_category where id=#{EdocCategoryId,jdbcType=INTEGER})
+    </if>
+
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, categoryId, title, summary, uploaduser, createdate
+    from edoc_entry
+  </select>
+</mapper>
